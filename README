@@ -1,1 +1,9 @@
 SCGID - An SCGI client for D (Alpha)
+An example script is available in src/example.d
+
+Compile 
+dmd src/example.d src/scgi.d
+
+Run the SCGI server
+./example 4444
+
