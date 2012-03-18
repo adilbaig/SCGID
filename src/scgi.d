@@ -3,7 +3,7 @@ module scgi;
 private :
     import std.conv : to; 
     import std.string : indexOf, split;
-    import std.regex;
+    //import std.regex;
     import std.stdio;
     
 public import std.socket;
