@@ -8,25 +8,22 @@ Run the SCGI server
 ./example 4444
 
 Setting up Webservers
-Most of the well known webservers support the SCGI protocol out fo the box (ex: Apache) or via 3rd party plugins (ex: Nginx). In both cases,
-the server is responsible for parsing an HTTP request and converting it into a valid SCGI request. This client reads that request and provides
-you with a simple API to access those variables. Here i have documented how to setup Apache.
+Most of the well known webservers support the SCGI protocol out of the box (ex: Apache) or via 3rd party plugins (ex: Nginx). In both cases, the server is responsible for parsing an incoming HTTP request and converting it into a valid SCGI request that can be passed to the appropraite handler. This client reads that request and provides you with a simple API to access those variables. Here i have documented how to setup Apache.
 
 Setting up Apache
 Official Link : http://httpd.apache.org/docs/2.3/mod/mod_proxy_scgi.html
 
-The simplest way to set it up is to enable the "mod_proxy_scgi" and setup a "ProxyPass" in your virtual host.
+You need to enable "mod_proxy_scgi" and setup a "ProxyPass" in your virtual host. The following are the simplest steps :
 
 -	Link (or copy) proxy.load and proxy_scgi.load to the mods-enabled folder.
-	In Ubuntu do this :
-	sudo ln -s /etc/apache2/mods-available/proxy* /etc/apache2/mods-enabled/
+	In Ubuntu :	sudo ln -s /etc/apache2/mods-available/proxy* /etc/apache2/mods-enabled/
 	
 -	Add ProxyPass to your VirtualHost, like so :
 	ProxyPass /any_path/ scgi://url:port/
-	ex:	ProxyPass /scgi-bin/ scgi://localhost:4444/
+	ex: ProxyPass /scgi-bin/ scgi://localhost:4444/
 	
-- 	Make sure your restart Apache.
-	On Ubuntu : sudo /etc/init.d/apache2 restart
+- 	Restart Apache.
+	In Ubuntu : sudo /etc/init.d/apache2 restart
 	
 Start the Server
 -	Now start your server on port 4444:
@@ -39,39 +36,33 @@ Code Example:
 Its only one line of code!
 
 	SCGIServer(int port, function void(const Request request, Socket connection){
-		/*
-           This function is called once per request. The Request struct contains the headers
-           as well GET and POST variables (parsed and urldecoded). The Socket is the connection 
-           to the client. Use connection.send("string") to send responses back to the client.
-           You can close the connection, or the library will do it for you once the function completes.   
-        */
-		
+		//Your code goes here
 	})
 
 See src/example.d
 
 About this project
-I wrote this library in a few hours over the weekend, because i couldn't find a D library for SCGI. One of the reasons
-this library is so small is because the SCGI protocol itself is so simple (http://www.python.ca/scgi/protocol.txt). Currently
-this code is single threaded, but it can be made into amultithreaded server on only a few more hours
+I wrote this library in a few hours over the weekend because i couldn't find a D library for SCGI. One of the reasons this library is so small is because the SCGI protocol itself is so simple (http://www.python.ca/scgi/protocol.txt). Currently this library is single threaded.
 
-I ran some ab (Apache Bench) test to get a feel of some performance. Here are the numbers:
+Benchmarks
+I ran some ab (Apache Bench) tests to get a feel of some performance. Here are the numbers after 3 tests:
 
-ab -c100 -n1000 http://localhost/scgi-bin/
+ab -c100 -n10000 http://localhost/scgi-bin/
 Concurrency Level:      100
-Time taken for tests:   0.356 seconds
-Complete requests:      1000
+Time taken for tests:   6.173 seconds
+Complete requests:      10000
 Failed requests:        0
-Requests per second:    2810.51 [#/sec] (mean)
-Time per request:       0.356 [ms] (mean, across all concurrent requests)
-Transfer rate:          3319.46 [Kbytes/sec] received
+Write errors:           0
+Requests per second:    1619.99 [#/sec] (mean)
+Time per request:       0.617 [ms] (mean, across all concurrent requests)
+Transfer rate:          1913.36 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    1   1.6      0       7
-Processing:     3   33   6.8     34      53
-Waiting:        2   33   6.7     34      42
-Total:          9   34   5.4     34      53
+Connect:        0    0   0.6      0       7
+Processing:     3   35 109.0     30    3037
+Waiting:        3   35 109.0     29    3037
+Total:         11   35 108.9     30    3037
 
 I ran this on an Intel Core i3 2.13Ghz, 4GB Ram and Ubuntu 11.04 x64
 
