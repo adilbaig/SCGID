@@ -43,6 +43,7 @@ See src/example.d
 
 About this project
 I wrote this library in a few hours over the weekend because i couldn't find a D library for SCGI. One of the reasons this library is so small is because the SCGI protocol itself is so simple (http://www.python.ca/scgi/protocol.txt). Currently this library is single threaded.
+This work is still Alpha, i have a lot more planned to make this into something production worthy.
 
 Benchmarks
 I ran some ab (Apache Bench) tests to get a feel of some performance. Here are the numbers after 3 tests:
