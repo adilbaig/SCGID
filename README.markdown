@@ -1,22 +1,19 @@
-SCGID - An SCGI client for D (Alpha)
+# SCGID - An SCGI client for D (Alpha)
 This library allows you to create a server in D that can listen/respond to SCGI requests. A usage example is available in src/example.d
+To run this example, compile the code, setup apache, run the server and visit the page using a web browser.
 
 
-Compilation Instructions
+## Compilation Instructions
 dmd -O -inline src/example.d src/scgi.d
 
-
-Run the SCGI server
+## Run the SCGI server
 ./example 4444
 
-
-Setting up Webservers
+## Setting up a WebServer
 Most of the well known webservers support the SCGI protocol out of the box (ex: Apache) or via 3rd party plugins (ex: Nginx). In both cases, the server is responsible for parsing an incoming HTTP request and converting it into a valid SCGI request that can be passed to the appropraite handler. This client reads that request and provides you with a simple API to access those variables. Here i have documented how to setup Apache.
 
-
-Setting up Apache
+### Setting up Apache
 Official Link : http://httpd.apache.org/docs/2.3/mod/mod_proxy_scgi.html
-
 You need to enable "mod_proxy_scgi" and setup a "ProxyPass" in your virtual host. The following are the simplest steps :
 
 -	Link (or copy) proxy.load and proxy_scgi.load to the mods-enabled folder.
@@ -29,15 +26,14 @@ You need to enable "mod_proxy_scgi" and setup a "ProxyPass" in your virtual host
 - 	Restart Apache.
 	In Ubuntu : sudo /etc/init.d/apache2 restart
 	
-Start the Server
 -	Now start your server on port 4444:
 	./example 4444
 	<Listening on port 4444.>
 
-Your server is now connected and ready to receieve requests.
+Your server is now connected and ready to receieve requests. Visit http://localhost/scgi-bin/ to see it in action.
 
 
-Code Example:
+## Code Example:
 Its only one line of code!
 
 	SCGIServer(int port, function void(const Request request, Socket connection){
@@ -47,12 +43,12 @@ Its only one line of code!
 See src/example.d
 
 
-About this project
+## About this project
 I wrote this library in a few hours over the weekend because i couldn't find a D library for SCGI. One of the reasons this library is so small is because the SCGI protocol itself is so simple (http://www.python.ca/scgi/protocol.txt). Currently this library is single threaded.
 This work is still Alpha, i have a lot more planned to make this into something production worthy.
 
 
-Benchmarks
+## Benchmarks
 I ran some ab (Apache Bench) tests to get a feel of some performance. Here are the numbers after 3 tests:
 
 ab -c100 -n10000 http://localhost/scgi-bin/
@@ -75,14 +71,15 @@ Total:         11   35 108.9     30    3037
 I ran this on an Intel Core i3 2.13Ghz, 4GB Ram and Ubuntu 11.04 x64
 
 
-D Compiler
-Tested only with dmd 2.058 on Ubuntu x64.
+## D Compiler
+Tested only with dmd 2.058 on Ubuntu x64. 
 
 
-Contributing to this project
+## Contributing to this project
 Please download and play with this project. Any thoughts on how to improve the code, documentation, performance and anything else is very welcome. 
 Open tickets for bugs, or pull requests for fixes.
 
 
 Thanks!
 Adil Baig
+Twitter : @aidezigns
