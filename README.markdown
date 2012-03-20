@@ -18,18 +18,18 @@ You need to enable "mod_proxy_scgi" and setup a "ProxyPass" in your virtual host
 
 -	Link (or copy) proxy.load and proxy_scgi.load to the mods-enabled folder.
 	In Ubuntu :	
-	
+
 		sudo ln -s /etc/apache2/mods-available/proxy* /etc/apache2/mods-enabled/
 	
 -	Add ProxyPass to your VirtualHost, like so :
 	ProxyPass /any_path/ scgi://url:port/
 	ex: 
-	
+
 		ProxyPass /scgi-bin/ scgi://localhost:4444/
 	
 - 	Restart Apache.
 	In Ubuntu : 
-	
+
 		sudo /etc/init.d/apache2 restart
 	
 -	Now start your server on port 4444:
