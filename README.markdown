@@ -2,15 +2,15 @@
 This library allows you to create a server in D that can listen/respond to SCGI requests. A usage example is available in src/example.d
 
 ## How to run
-Compile the code, setup apache, run the server and visit the page using a web browser.
+Compile the code, setup apache, run the server and visit the page using a web browser. Instructions are given below.
 
-## Compilation Instructions
-dmd -O -inline src/example.d src/scgi.d
+### Compilation Instructions
+	dmd -O -inline src/example.d src/scgi.d
 
-## Setting up a WebServer
-Most of the well known webservers support the SCGI protocol out of the box (ex: Apache) or via 3rd party plugins (ex: Nginx). In both cases, the server is responsible for parsing an incoming HTTP request and converting it into a valid SCGI request that can be passed to the appropraite handler. This client reads that request and provides you with a simple API to access those variables. Here i have documented how to setup Apache.
+### Setting up a WebServer
+Most well-known webservers support SCGI out of the box (ex: Apache) or via 3rd party plugins (ex: Nginx). In both cases, the server is responsible for parsing an incoming HTTP request and converting it into a valid SCGI request. This client reads that request and provides you with a simple API to access server/request variables. Here i have documented how to setup Apache, most other webservers should be as easy.
 
-### Setting up Apache
+#### Setting up Apache
 Official Link : http://httpd.apache.org/docs/2.3/mod/mod_proxy_scgi.html . You need to enable "mod_proxy_scgi" and setup a "ProxyPass" in your virtual host. The following are the simplest steps :
 
 -	Link (or copy) proxy.load and proxy_scgi.load to the mods-enabled folder.
@@ -29,7 +29,7 @@ Official Link : http://httpd.apache.org/docs/2.3/mod/mod_proxy_scgi.html . You n
 
 		sudo /etc/init.d/apache2 restart
 	
-## Run SCGI
+### Run SCGI
 Now start your server on the same port you configured Apache with:
 
 	./example 4444
