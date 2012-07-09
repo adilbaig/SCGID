@@ -21,8 +21,9 @@ int main(string args[])
            You can close the connection, or the library will do it for you once the function completes.   
         */
         
-        connection.send("Status: 200 OK\r\n\r\n");
-        connection.send("Content-Type: text/html\r\n\r\n");
+        connection.send("Status: 200 OK\r\n");
+        connection.send("Content-Type: text/html\r\n");
+        connection.send("\r\n"); //Signals the end of headers
 
         connection.send("<h1>Headers</h1><ul>");
         foreach(k, v; request.headers)
