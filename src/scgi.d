@@ -4,6 +4,7 @@ private :
     import std.conv : to; 
     import std.string : indexOf, split;
     import std.stdio;
+    import std.container : SList;
     
 public import std.socket;
     
@@ -21,34 +22,52 @@ public :
         
         uint maxConnections = 60;
         SocketSet sset = new SocketSet(maxConnections + 1);
+        Socket[] read;
         
         while(true)
         {
             sset.reset();
             sset.add(listener);
-            
+            foreach(s ; read)
+                sset.add(s);
+                
             Socket.select(sset, null, null);
             
+            uint i = 0;
+            while(i < read.length)
+            {
+                auto conn = read[i];
+                if(sset.isSet(conn))
+                {
+                    try{
+                        Request r = getRequest(conn);
+                        handler(r, conn);
+                    }catch(Exception e)
+                    {
+                        writeln(e);
+                    }
+                    finally
+                    {
+                        if (conn.isAlive)
+                        {
+                            conn.close();
+                            writeln("Connection closed");
+                        }
+                        
+                        read = std.algorithm.remove(read, i);
+                        writefln("\tTotal connections: %d", read.length);
+                    }
+                }
+                else
+                    i++;
+            }
+                
             if(sset.isSet(listener))
             {
                 Socket conn = listener.accept();
+                conn.blocking = false;
                 writef("Received connection from %s .. ", conn.remoteAddress().toString());
-                
-                try{
-                    Request r = getRequest(conn);
-                    handler(r, conn);
-                }catch(Exception e)
-                {
-                    writeln(e);
-                }
-                finally
-                {
-                    if (conn.isAlive)
-                    {
-                        conn.close();
-                        writeln("Connection closed");
-                    }
-                }
+                read ~= conn;
             }
         }
     }
