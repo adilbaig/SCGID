@@ -4,7 +4,7 @@ private :
     import std.conv : to; 
     import std.string : indexOf, split;
     import std.stdio;
-    import std.container : SList;
+    import core.thread;
     
 public import std.socket;
     
