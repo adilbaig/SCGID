@@ -40,7 +40,7 @@ Your server is now connected and ready to receieve requests. Visit http://localh
 ## Code Example:
 Its only one line of code!
 
-	SCGIServer(int port, function void(const Request request, Socket connection){
+	SCGIServer(host, port, delegate void(Request request, Socket connection){
 		//Your code goes here
 	})
 
