@@ -1,4 +1,8 @@
-import scgi, std.conv, std.stdio;
+import 
+    scgi.SCGIServer, 
+    std.conv, 
+    std.stdio
+    ;
 
 int main(string args[])
 {
@@ -11,9 +15,10 @@ int main(string args[])
     auto port = to!ushort(args[1]);
     
     /**
-       The following call will start the SCGI server on port "port" and go into and infinite loop.
+       The following call will start the SCGI server on localhost:port
     */
-    SCGIServer(port, function void(const Request request, Socket connection){
+//    auto server = new SCGIServer("localhost", port);
+    SCGIServer("localhost", port, delegate void(Request request, Socket connection){
         /*
            This function is called once per request. The Request struct contains the headers
            as well GET and POST variables (parsed and urldecoded). The Socket is the connection 
