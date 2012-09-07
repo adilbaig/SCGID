@@ -14,7 +14,7 @@ public :
     {
         GenericServer(host, port, delegate void(const byte[] bytes, Socket c){
             auto r = getRequest(cast(char[]) bytes);
-            writeln(r);
+            debug { writeln(r); }
             handler(r, c);
         });
     }
