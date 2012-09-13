@@ -79,12 +79,13 @@ private :
         
         do{
             len = connection.receive(buff);
+            if (Socket.ERROR == len)
+                throw new Exception("Connection error.");
+            
             rez ~= buff[0 .. len];
         }while(len > buff.length);
         
-        if (Socket.ERROR == len)
-            throw new Exception("Connection error.");
-        else if (0 == rez.length)
+        if (0 == rez.length)
             throw new Exception("Connection closed.");
             
         return rez;
